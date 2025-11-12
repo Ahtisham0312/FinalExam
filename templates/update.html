@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update User</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Update User</h1>
+        <form action="{{ url_for('update_user', id=user.id) }}" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="{{ user.name }}" required>
+
+            <label for="roll_number">Roll Number:</label>
+            <input type="text" id="roll_number" name="roll_number" value="{{ user.roll_number }}" required>
+
+            <button type="submit">Update</button>
+        </form>
+
+        <a href="{{ url_for('home') }}">Back to Home</a>
+    </div>
+</body>
+</html>
