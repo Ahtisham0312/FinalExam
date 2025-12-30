@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    environment {
+        FLASK_APP = "app.py"
+        FLASK_ENV = "production"
+        DATABASE_URL = "sqlite:///database.db"
+    }
+
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Ahtisham0312/FinalExam'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh '''
+                python -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                sh '''
+                . venv/bin/activate
+                pytest
+                '''
+            }
+        }
+
+        stage('Build Application') {
+            steps {
+                echo "Build completed successfully"
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
+                sh '''
+                . venv/bin/activate
+                nohup python app.py &
+                '''
+            }
+        }
+    }
+
+    triggers {
+        githubPush()
+    }
+}
