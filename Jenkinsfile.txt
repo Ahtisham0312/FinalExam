@@ -12,27 +12,27 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/Ahtisham0312/FinalExam'
+                    url: 'https://github.com/Ahtisham0312/FinalExam.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh '''
+                bat """
                 python -m venv venv
-                . venv/bin/activate
+                venv\\Scripts\\activate
                 pip install --upgrade pip
                 pip install -r requirements.txt
-                '''
+                """
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                sh '''
-                . venv/bin/activate
+                bat """
+                venv\\Scripts\\activate
                 pytest
-                '''
+                """
             }
         }
 
@@ -44,10 +44,10 @@ pipeline {
 
         stage('Deploy Application') {
             steps {
-                sh '''
-                . venv/bin/activate
-                nohup python app.py &
-                '''
+                bat """
+                venv\\Scripts\\activate
+                start /B python app.py
+                """
             }
         }
     }
